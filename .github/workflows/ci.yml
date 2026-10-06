@@ -74,10 +74,12 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.0.x'
-      - run: dotnet format src/WuTrayToggle/WuTrayToggle.csproj --verify-no-changes
+          global-json-file: global.json
+      - run: dotnet format WuTrayToggle.slnx --verify-no-changes
+      # CI=true のため、警告はエラーになる（Directory.Build.props）
+      - run: dotnet build WuTrayToggle.slnx -c Release --no-incremental
 
   build:
     name: Build
@@ -89,11 +91,11 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.0.x'
-      - run: dotnet publish src/WuTrayToggle -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o dist
-      - run: dotnet build installer/WuTrayToggle.Installer.wixproj -c Release -o dist
+          global-json-file: global.json
+      - run: dotnet publish src/WuTrayToggle -c Release -o publish
+      - run: dotnet build installer/WuTrayToggle.Installer.wixproj -c Release -p:PublishDir=${{ github.workspace }}\publish
 
   gate:
     name: CI

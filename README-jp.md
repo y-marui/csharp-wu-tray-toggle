@@ -21,21 +21,19 @@ Windows と管理者権限が必要です。
 
 ### Building from source
 
-.NET 8 SDK が必要です。
+.NET 10 SDK が必要です（`global.json` で固定）。配布はインストーラー（MSI）に一本化しているため、ソースから直接インストールする方法はありません。開発時の起動は `make run` です。
 
 ```powershell
-make install
+make run
 ```
-
-自己完結の単一exeをビルドし、デスクトップに `WU_TrayIcon.lnk` ショートカットを作成します。ダブルクリックで起動します。
 
 ## Usage
 
 | コマンド | 説明 |
 |---|---|
-| `make install` | ビルドしてデスクトップにショートカットをインストール |
-| `make uninstall` | ショートカットを削除 |
-| `make msi` | MSIインストーラーを `dist/` にビルド |
+| `make run` | アプリを起動する（開発用） |
+| `make lint` | `dotnet format` と、警告をエラーにしたビルド |
+| `make msi` | publish して MSI を `installer/bin/x64/Release/` にビルド |
 
 トレイアイコンを右クリックしてメニューを操作します：
 

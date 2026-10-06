@@ -6,30 +6,9 @@ namespace WuTrayToggle;
 
 internal static class ShortcutManager
 {
-    private const string ShortcutFileName = "WU_TrayIcon.lnk";
+    // ログイン時の自動起動（スタートアップフォルダ）のショートカット。トレイのメニューから実行時に作る。
+    // デスクトップ・スタートメニューのショートカットは MSI が作る（配布の入口は MSI に一本化している）
     private const string StartupShortcutFileName = "WU_TrayIcon.lnk";
-
-    public static void Install()
-    {
-        var exePath = Environment.ProcessPath;
-        if (exePath is null)
-        {
-            return;
-        }
-
-        CreateShortcut(GetShortcutPath(), exePath);
-    }
-
-    public static void Uninstall()
-    {
-        var path = GetShortcutPath();
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
-
-        DisableStartup();
-    }
 
     public static bool IsStartupEnabled()
     {
@@ -54,12 +33,6 @@ internal static class ShortcutManager
         {
             File.Delete(path);
         }
-    }
-
-    private static string GetShortcutPath()
-    {
-        var desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        return Path.Combine(desktop, ShortcutFileName);
     }
 
     private static string GetStartupShortcutPath()

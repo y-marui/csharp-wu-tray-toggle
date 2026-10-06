@@ -18,21 +18,22 @@ AI はタスク開始時に以下の順で参照する:
 
 Windows Update の自動更新をシステムトレイから停止・再開できる C# 製トレイアプリ。
 
-- **言語:** C# (.NET 8, WinForms)
+- **言語:** C# (.NET 10, WinForms)
 - **対象OS:** Windows のみ
 - **主要ファイル:**
   - `src/WuTrayToggle/TrayApplicationContext.cs` — トレイアイコン本体（System.Windows.Forms を使用）
   - `src/WuTrayToggle/WindowsUpdateController.cs` — レジストリ確認・サービス制御
-  - `src/WuTrayToggle/ShortcutManager.cs` — デスクトップショートカット作成・削除（`--install` / `--uninstall`）
+  - `src/WuTrayToggle/ShortcutManager.cs` — ログイン時の自動起動（スタートアップのショートカット）の作成・削除
   - `src/WuTrayToggle/Program.cs` — エントリポイント（引数解析・多重起動防止）
-  - `Makefile` — build / install / uninstall コマンド
+  - `installer/` — WiX 6 の MSI（配布の入口はこれに一本化）
+  - `Makefile` — run / lint / publish / msi コマンド
 
 ## Applied Charter Principles
 
 憲章参照: `docs/dev-charter/CHARTER_INDEX.md` でトピックを特定してから該当ファイルのみ読む。
 
 - **言語ポリシー:** README.md（英語・参照）と README-jp.md（日本語・正本）を同一コミットで更新する → `docs/dev-charter/LANGUAGE_POLICY.md`
-- **CI:** `.github/workflows/ci.yml` に `dotnet format` Lint + `dotnet publish` Build 集約 job → `docs/dev-charter/topics/CI_POLICY.md`
+- **CI:** `.github/workflows/ci.yml` に `dotnet format` + 警告をエラーにしたビルドの Lint、`dotnet publish` + MSI の Build、集約 job → `docs/dev-charter/topics/CI_POLICY.md`・[CSHARP_DEV_ENV.md](https://github.com/y-marui/dev-charter/blob/develop/src/topics/csharp/CSHARP_DEV_ENV.md)（憲章の `main` 反映後に、`docs/dev-charter/topics/csharp/` のローカルパスへ置き換える）
 - **コーディング原則:** YAGNI・変更最小限・DRY3回ルール → `docs/dev-charter/PRINCIPLES.md`
 
 ## dev-charter Modification Rules
@@ -51,7 +52,7 @@ Windows Update の自動更新をシステムトレイから停止・再開で�
 ## Project-Specific Rules
 
 - `WindowsUpdateController.cs` はレジストリ書き込みと Windows サービス操作を行うため、変更時は管理者権限要件を考慮する
-- インストール先はデスクトップショートカット（`WU_TrayIcon.lnk`）のみ。レジストリへの永続インストールは行わない
+- 配布は MSI のみ（perMachine）。exe を直接配る経路や、アプリ自身がデスクトップのショートカットを作る経路は持たない。`installer/Product.wxs` の `UpgradeCode` と `MainExecutable` の Component の Guid は変更しない
 
 ## AI Tool Assignments
 

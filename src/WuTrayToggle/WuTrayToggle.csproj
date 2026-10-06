@@ -2,30 +2,24 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>WuTrayToggle</AssemblyName>
     <RootNamespace>WuTrayToggle</RootNamespace>
-    <Version>1.0.0</Version>
-    <FileVersion>1.0.0.0</FileVersion>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <InformationalVersion>1.0.0</InformationalVersion>
+    <!-- Version / FileVersion / AssemblyVersion は Directory.Build.props の Version から導出する -->
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <InvariantGlobalization>true</InvariantGlobalization>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
 
+    <!-- インストーラー（MSI）で配るため、自己完結の複数ファイルにする（単一ファイルにしない） -->
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <SelfContained>true</SelfContained>
-    <PublishSingleFile>true</PublishSingleFile>
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="8.0.1" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" />
   </ItemGroup>
 
   <ItemGroup>

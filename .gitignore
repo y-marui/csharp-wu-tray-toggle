@@ -4,3 +4,12 @@
 bin/
 obj/
 dist/
+
+# publish / installer output
+publish/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo

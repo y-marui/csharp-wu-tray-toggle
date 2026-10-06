@@ -21,21 +21,19 @@ Download the latest `WuTrayToggle-vX.Y.Z-win-x64.msi` from [Releases](https://gi
 
 ### Building from source
 
-Requires the .NET 8 SDK.
+Requires the .NET 10 SDK (pinned in `global.json`). Distribution is MSI-only, so there is no way to install directly from source. Use `make run` to launch the app during development.
 
 ```powershell
-make install
+make run
 ```
-
-Builds a self-contained single-file exe and creates a shortcut `WU_TrayIcon.lnk` on the desktop. Double-click it to launch the tray icon.
 
 ## Usage
 
 | Command | Description |
 |---|---|
-| `make install` | Build and install a desktop shortcut |
-| `make uninstall` | Remove desktop shortcut |
-| `make msi` | Build the MSI installer into `dist/` |
+| `make run` | Run the app (for development) |
+| `make lint` | `dotnet format` plus a build with warnings as errors |
+| `make msi` | Publish, then build the MSI into `installer/bin/x64/Release/` |
 
 Right-click the tray icon to access the menu:
 

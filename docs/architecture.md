@@ -2,13 +2,13 @@
 
 ## Overview
 
-C# (.NET 8, WinForms) 製システムトレイアプリ。`NotifyIcon` でトレイアイコンを常駐させ、
+C# (.NET 10, WinForms) 製システムトレイアプリ。`NotifyIcon` でトレイアイコンを常駐させ、
 右クリックメニューから Windows Update の停止・再開を操作する。
 レジストリポリシーとサービス制御で WU を制御し、操作には管理者昇格が必要。
 
 ## Entry Points
 
-- `src/WuTrayToggle/Program.cs` — エントリポイント。引数なしならトレイ常駐（`Mutex` で多重起動防止）、`--install`/`--uninstall`/`--elevated-stop`/`--elevated-start` を解釈する
+- `src/WuTrayToggle/Program.cs` — エントリポイント。引数なしならトレイ常駐（`Mutex` で多重起動防止）、`--disable-startup`（MSIのアンインストール用）/`--elevated-stop`/`--elevated-start` を解釈する
 - `src/WuTrayToggle/TrayApplicationContext.cs` — トレイアイコン・コンテキストメニューの常駐処理
 
 ## Directory Structure
@@ -16,7 +16,7 @@ C# (.NET 8, WinForms) 製システムトレイアプリ。`NotifyIcon` でトレ
 | ディレクトリ | 役割 |
 |---|---|
 | `src/WuTrayToggle/` | C# プロジェクト本体（.csproj + ソース） |
-| `installer/` | MSIインストーラー定義（WiX Toolset v5） |
+| `installer/` | MSIインストーラー定義（WiX 6）。`.slnx` には含めず、publish のあとに単独でビルドする |
 | `docs/dev-charter/` | 開発憲章（git subtree） |
 | `docs/` | プロジェクトドキュメント |
 
@@ -28,5 +28,5 @@ C# (.NET 8, WinForms) 製システムトレイアプリ。`NotifyIcon` でトレ
 | `System.Drawing` | 埋め込み`.ico`リソースからの `Icon` 読み込み |
 | `Microsoft.Win32.Registry` | WU ポリシー(`NoAutoUpdate`)・サービス起動種別の読み書き |
 | `System.ServiceProcess.ServiceController` (NuGet) | `wuauserv` サービスの状態取得・起動・停止 |
-| `IShellLinkW`/`IPersistFile` (COM interop) | ショートカット（.lnk）ファイルの作成・削除 |
-| WiX Toolset v5 (`WixToolset.Sdk`, NuGet) | `installer/` のMSIビルド（`dotnet build` で完結、Visual Studio拡張不要） |
+| `IShellLinkW`/`IPersistFile` (COM interop) | ログイン時自動起動のショートカット（.lnk）の作成・削除 |
+| WiX 6 (`WixToolset.Sdk`, `global.json` の `msbuild-sdks`) | `installer/` のMSIビルド（`dotnet build` で完結、Visual Studio拡張不要） |

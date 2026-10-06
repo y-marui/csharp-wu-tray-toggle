@@ -1,8 +1,9 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <!-- UpgradeCode と、MainExecutable の Component の Guid は変えない（上書きアップグレードの互換性のため） -->
   <Package Name="WU Tray Toggle"
            Manufacturer="y-marui"
-           Version="$(var.ProductVersion)"
+           Version="$(Version)"
            UpgradeCode="059381dc-b129-4c96-b6ef-9644338a7330"
            Scope="perMachine">
 
@@ -13,9 +14,15 @@
 
     <StandardDirectory Id="ProgramFiles64Folder">
       <Directory Id="INSTALLFOLDER" Name="WuTrayToggle">
+        <!-- 本体の exe は、アンインストール時のカスタムアクションが FileRef で参照するため、明示的に定義する -->
         <Component Id="MainExecutable" Guid="6f1c2a3b-9e8d-4c7a-8b2e-1d4f5a6b7c8d">
-          <File Id="WuTrayToggleExe" Source="$(var.PublishDir)\WuTrayToggle.exe" KeyPath="yes" />
+          <File Id="WuTrayToggleExe" Source="$(PublishDir)\WuTrayToggle.exe" KeyPath="yes" />
         </Component>
+        <!-- 残りの publish 物（自己完結のランタイム等）は丸ごと取り込む。デバッグシンボルは含めない -->
+        <Files Include="$(PublishDir)\**">
+          <Exclude Files="$(PublishDir)\WuTrayToggle.exe" />
+          <Exclude Files="$(PublishDir)\**\*.pdb" />
+        </Files>
       </Directory>
     </StandardDirectory>
 
@@ -41,12 +48,6 @@
         <RegistryValue Root="HKCU" Key="Software\WuTrayToggle" Name="DesktopShortcut" Type="integer" Value="1" KeyPath="yes" />
       </Component>
     </StandardDirectory>
-
-    <Feature Id="Main" Title="WU Tray Toggle" Level="1">
-      <ComponentRef Id="MainExecutable" />
-      <ComponentRef Id="StartMenuShortcut" />
-      <ComponentRef Id="DesktopShortcut" />
-    </Feature>
 
     <!-- The Startup-folder autostart shortcut ("ログイン時に自動起動") is created at
          runtime by the tray menu, so MSI never tracks it. Clean it up on uninstall. -->
