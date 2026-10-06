@@ -17,7 +17,7 @@ Requires Windows and administrator privileges.
 
 ### From the installer (recommended)
 
-Download the latest `WuTrayToggle-vX.Y.Z-win-x64.msi` from [Releases](https://github.com/y-marui/csharp-wu-tray-toggle/releases) and run it. After the UAC prompt, Start Menu and desktop shortcuts are created. Uninstall from "Apps & features".
+Download the latest `WuTrayToggle-vX.Y.Z-win-x64.msi` from [Releases](https://github.com/y-marui/csharp-wu-tray-toggle/releases) and run it. After the UAC prompt, Start Menu and desktop shortcuts are created. Uninstall from "Apps & features". To build from source instead, see [Building from source](#building-from-source).
 
 ### Building from source
 

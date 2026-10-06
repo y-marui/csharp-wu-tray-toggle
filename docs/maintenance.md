@@ -4,7 +4,7 @@
 
 ---
 
-## docs/architecture.md を更新する
+## Updating docs/architecture.md
 
 ```
 src/ 配下のファイルを確認し、docs/architecture.md を最新の状態に更新してください。
@@ -23,7 +23,7 @@ src/ 配下のファイルを確認し、docs/architecture.md を最新の状態
 
 ---
 
-## docs/file-map.md を更新する
+## Updating docs/file-map.md
 
 ```
 作業対象ファイルの依存関係を調査し、docs/file-map.md に追記・更新してください。

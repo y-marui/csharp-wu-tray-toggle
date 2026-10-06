@@ -15,11 +15,11 @@ Windows Update の自動更新を通知領域のトレイアイコンから停�
 
 Windows と管理者権限が必要です。
 
-### インストーラーから（推奨）
+### From the installer (recommended)
 
-[Releases](https://github.com/y-marui/csharp-wu-tray-toggle/releases) から最新の `WuTrayToggle-vX.Y.Z-win-x64.msi` をダウンロードして実行します。UAC昇格後、スタートメニューとデスクトップにショートカットが作成されます。アンインストールは「アプリと機能」から行えます。
+[Releases](https://github.com/y-marui/csharp-wu-tray-toggle/releases) から最新の `WuTrayToggle-vX.Y.Z-win-x64.msi` をダウンロードして実行します。UAC昇格後、スタートメニューとデスクトップにショートカットが作成されます。アンインストールは「アプリと機能」から行えます。ソースからビルドする場合は [Building from source](#building-from-source) を参照してください。
 
-### ソースからビルドする場合
+### Building from source
 
 .NET 8 SDK が必要です。
 
