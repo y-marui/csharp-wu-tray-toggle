@@ -7,11 +7,16 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   changes:
     name: Detect changes
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.LINUX_RUNNER && !github.event.pull_request.head.repo.fork && vars.LINUX_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 5
     outputs:
       code: ${{ steps.filter.outputs.code }}
     steps:
@@ -43,7 +48,8 @@ jobs:
   security:
     name: Security scan (pre-commit)
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.LINUX_RUNNER && !github.event.pull_request.head.repo.fork && vars.LINUX_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -59,7 +65,8 @@ jobs:
     name: Lint
     needs: changes
     if: needs.changes.outputs.code == 'true'
-    runs-on: windows-latest
+    runs-on: ${{ vars.WINDOWS_RUNNER && !github.event.pull_request.head.repo.fork && vars.WINDOWS_RUNNER || 'windows-latest' }}
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
@@ -73,7 +80,8 @@ jobs:
     name: Build
     needs: [changes, security, lint]
     if: needs.changes.outputs.code == 'true'
-    runs-on: windows-latest
+    runs-on: ${{ vars.WINDOWS_RUNNER && !github.event.pull_request.head.repo.fork && vars.WINDOWS_RUNNER || 'windows-latest' }}
+    timeout-minutes: 30
     permissions:
       contents: read
     steps:
@@ -88,7 +96,8 @@ jobs:
     name: CI
     needs: [changes, security, lint, build]
     if: always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.LINUX_RUNNER && !github.event.pull_request.head.repo.fork && vars.LINUX_RUNNER || 'ubuntu-latest' }}
+    timeout-minutes: 5
     steps:
       - name: Verify required jobs succeeded
         run: |
