@@ -1,0 +1,15 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- アセンブリと MSI の単一のバージョン。CHANGELOG.md と揃える -->
+    <Version>1.0.0</Version>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisLevel>latest-Recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- 警告をエラーにするのは CI のときだけ（GitHub Actions は CI=true を設定する）。
+         ローカルでは警告として見え、作業を止めない -->
+    <TreatWarningsAsErrors Condition="'$(CI)' == 'true'">true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>

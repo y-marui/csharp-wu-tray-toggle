@@ -21,6 +21,11 @@ internal static class WindowsUpdateController
             : Strings.TrayTextRunning;
     }
 
+    // 書式文字列は言語設定で実行時に切り替わり、呼ばれるのも「状態確認」の操作時だけなので、CompositeFormat にキャッシュしない
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+        "Performance",
+        "CA1863:Use 'CompositeFormat'",
+        Justification = "The format string is localized at runtime and this runs only on a user action.")]
     public static string GetStatusReport()
     {
         var policyText = GetNoAutoUpdate() == 1 ? Strings.PolicyStopped : Strings.PolicyRunning;

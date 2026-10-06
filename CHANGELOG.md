@@ -4,6 +4,20 @@ All notable changes to this project will be documented here.
 
 ## [Unreleased]
 
+### Changed
+- Moved from .NET 8 to .NET 10 LTS (.NET 8 reaches end of support on 2026-11-10). The SDK is pinned in `global.json`.
+- Adopted the standard C# layout from the dev-charter C# topic: `global.json`, `Directory.Build.props` (single `<Version>`, analyzers at `latest-Recommended`, warnings are errors on CI), `Directory.Packages.props` (Central Package Management), `.editorconfig`, and a `.slnx` solution.
+- The MSI is now built with WiX 6 and packages the self-contained published folder (multi-file; no longer a single-file exe). `UpgradeCode` and the main component GUID are unchanged, so existing installs upgrade in place.
+- High DPI mode is now `PerMonitorV2` (via `ApplicationHighDpiMode` and `ApplicationConfiguration.Initialize()`), previously `SystemAware`.
+- CI uses `actions/setup-dotnet@v5` with `global-json-file` and builds the MSI from the published folder.
+
+### Added
+- `release.yml`: pushing a tag `vX.Y.Z` builds the MSI and attaches it to a GitHub Release.
+- Dependabot for `nuget`, `dotnet-sdk`, and `github-actions`.
+
+### Removed
+- `--install` / `--uninstall` and `make install` / `make uninstall`: distribution is MSI-only. A desktop `WU_TrayIcon.lnk` left over from the old source install is not managed by the MSI and can be deleted manually. Use `make run` during development.
+
 ## [1.0.0] - 2026-08-04
 
 ### Added

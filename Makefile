@@ -1,13 +1,21 @@
-.PHONY: install uninstall build msi
+.PHONY: build lint run publish msi all
+
+SLN := WuTrayToggle.slnx
 
 build:
-	dotnet publish src/WuTrayToggle -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o dist
+	dotnet build $(SLN)
 
-install: build
-	dist/WuTrayToggle.exe --install
+lint:
+	dotnet format $(SLN) --verify-no-changes
+	CI=true dotnet build $(SLN) --no-incremental
 
-uninstall:
-	powershell -NoProfile -Command "$$desktop = [Environment]::GetFolderPath('Desktop'); Remove-Item (Join-Path $$desktop 'WU_TrayIcon.lnk') -ErrorAction SilentlyContinue; Write-Host 'Uninstalled WU_TrayIcon.lnk'"
+run:
+	dotnet run --project src/WuTrayToggle
 
-msi: build
-	dotnet build installer/WuTrayToggle.Installer.wixproj -c Release -o dist
+publish:
+	dotnet publish src/WuTrayToggle -c Release -o publish
+
+msi: publish
+	dotnet build installer/WuTrayToggle.Installer.wixproj -c Release -p:PublishDir=$(CURDIR)/publish
+
+all: lint

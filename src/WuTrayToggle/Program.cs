@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace WuTrayToggle;
 
 internal static class Program
@@ -13,12 +11,6 @@ internal static class Program
         {
             switch (args[0])
             {
-                case "--install":
-                    ShortcutManager.Install();
-                    return;
-                case "--uninstall":
-                    ShortcutManager.Uninstall();
-                    return;
                 case "--disable-startup":
                     // Invoked by the MSI uninstaller: the Startup-folder autostart
                     // shortcut is created at runtime via the tray menu, so MSI has
@@ -41,9 +33,8 @@ internal static class Program
             return;
         }
 
-        Application.SetHighDpiMode(HighDpiMode.SystemAware);
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
+        // 高 DPI は csproj の ApplicationHighDpiMode（PerMonitorV2）。ビジュアルスタイルなども一括で設定する
+        ApplicationConfiguration.Initialize();
         Application.Run(new TrayApplicationContext());
     }
 }

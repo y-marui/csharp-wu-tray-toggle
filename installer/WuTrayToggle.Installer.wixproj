@@ -1,16 +1,17 @@
-<Project Sdk="WixToolset.Sdk/5.0.2">
+<Project Sdk="WixToolset.Sdk">
 
+  <!-- WiX のバージョンは global.json の msbuild-sdks で固定する。
+       Version は Directory.Build.props から受ける（二重管理しない） -->
   <PropertyGroup>
-    <!-- Keep in sync with src/WuTrayToggle/WuTrayToggle.csproj's <Version>. -->
-    <ProductVersion>1.0.0</ProductVersion>
-    <PublishDir>..\dist</PublishDir>
-    <OutputName>WuTrayToggle-v$(ProductVersion)-win-x64</OutputName>
+    <OutputName>WuTrayToggle-v$(Version)-win-x64</OutputName>
     <Platform>x64</Platform>
-    <DefineConstants>ProductVersion=$(ProductVersion);PublishDir=$(PublishDir)</DefineConstants>
+    <!-- publish したフォルダ（dotnet publish src/WuTrayToggle -c Release -o publish）。絶対パスで渡す -->
+    <PublishDir Condition="'$(PublishDir)' == ''">$(MSBuildThisFileDirectory)..\publish</PublishDir>
+    <DefineConstants>Version=$(Version);PublishDir=$(PublishDir)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="WixToolset.UI.wixext" Version="5.0.2" />
+    <PackageReference Include="WixToolset.UI.wixext" />
   </ItemGroup>
 
 </Project>

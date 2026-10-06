@@ -24,29 +24,24 @@ Windows Update の自動更新をシステムトレイから停止・再開す�
 
 ## Installation
 
-配布方法は2通りある。
+配布はMSIインストーラーに一本化している（exeを直接配る経路や、アプリ自身がデスクトップのショートカットを作る経路は持たない）。
 
-### MSI installer (for end users, recommended)
+### MSI installer
 
-`installer/`（WiX Toolset v5）が `WuTrayToggle-vX.Y.Z-win-x64.msi` をビルドする（`make msi`）。
+`installer/`（WiX 6）が `WuTrayToggle-vX.Y.Z-win-x64.msi` をビルドする（`make msi`）。publishした自己完結のフォルダ（`dotnet publish`、単一ファイルにはしない）を `Files` 要素で丸ごと取り込む。バージョンは `Directory.Build.props` の `<Version>` から渡される。
 
 - マシン単位（per-machine）インストール。`%ProgramFiles%\WuTrayToggle\WuTrayToggle.exe` に配置するため、インストール自体にUAC昇格が必要
-- スタートメニュー・デスクトップショートカットはMSIネイティブの機能で作成・追跡し、アンインストール時に自動削除される（`ShortcutManager`/`--install` は使わない）
+- スタートメニュー・デスクトップショートカットはMSIネイティブの機能で作成・追跡し、アンインストール時に自動削除される
 - Add/Remove Programs（アプリと機能）に登録される（MSI標準機能）
 - アンインストール時、deferred custom action として `WuTrayToggle.exe --disable-startup` を実行し、ユーザーが後から有効化していた「ログイン時に自動起動」（スタートアップフォルダ、MSIの管理外）も解除する
-- `UpgradeCode` は固定GUID（`059381dc-b129-4c96-b6ef-9644338a7330`）。将来のバージョンアップ時に上書きインストールできるよう、変更しない
-
-### `--install`/`--uninstall` (for source builds)
-
-`src/WuTrayToggle/ShortcutManager.cs` が `--install` 引数呼び出し時にデスクトップへ `WU_TrayIcon.lnk` を作成する（`IShellLinkW`/`IPersistFile` COM interop）。
-ショートカットは自exe（`Environment.ProcessPath`）を直接指すため、PowerShellの起動を経由しない。
-`--uninstall` 引数、または `make uninstall` でショートカットを削除する。
+- `UpgradeCode` は固定GUID（`059381dc-b129-4c96-b6ef-9644338a7330`）。将来のバージョンアップ時に上書きインストールできるよう、変更しない（本体 exe の Component の Guid も同様）
+- 以前のソースビルド用 `--install`（`make install`）で作った、デスクトップの `WU_TrayIcon.lnk` は、MSIでは管理しない。残っていれば手動で削除する
 
 ## Auto-start at login
 
 トレイメニューの「ログイン時に自動起動」（チェック可能項目）で、スタートアップフォルダ（`Environment.SpecialFolder.Startup`、`%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup`）への自exeショートカット登録/解除をトグルする（`ShortcutManager.EnableStartup`/`DisableStartup`）。
 レジストリの `Run` キー等は使用せず、ユーザー単位のスタートアップフォルダのみを使う（永続的なレジストリインストールを避ける方針に従う）。
-`--uninstall`（`make uninstall` 相当）実行時は、このスタートアップ登録も合わせて解除される。
+MSIのアンインストール時は、このスタートアップ登録も合わせて解除される（上記の `--disable-startup`）。
 
 ## Localization
 
