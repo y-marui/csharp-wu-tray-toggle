@@ -35,6 +35,10 @@ jobs:
               - '!.github/copilot-instructions.md'
               - '!.github/workflows/dev-charter-check.yml'
               - '!.github/workflows/auto-assign-self.yml'
+              # dev-charter distributed files (brought in by git subtree update PRs)
+              - '!.pre-commit-config.yaml'
+              - '!scripts/{check-ai-context-reference,check-charter-ci-template,check-charter-doc-links,check-charter-subtree-edit,check-conventional-commit,check-dotenv-gitignore,check-language-pair-footer,check-language-pair-sync,check-license-exists,check-local-charter-version,check-markdown-heading-language,check-not-on-default-branch,check-powershell-lint,check-python-package-management,check-readme-placeholders,check-version-date,new-branch}.{sh,ps1}'
+              - '!scripts/PSScriptAnalyzerSettings.psd1'
 
   security:
     name: Security scan (pre-commit)
@@ -47,6 +51,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: pre-commit/action@v3.0.1
+        env:
+          # powershell-lint is a local-only helper (see .pre-commit-config.yaml)
+          SKIP: powershell-lint
 
   lint:
     name: Lint
@@ -78,7 +85,7 @@ jobs:
       - run: dotnet build installer/WuTrayToggle.Installer.wixproj -c Release -o dist
 
   gate:
-    name: Required Checks
+    name: CI
     needs: [changes, security, lint, build]
     if: always() && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     runs-on: ubuntu-latest
