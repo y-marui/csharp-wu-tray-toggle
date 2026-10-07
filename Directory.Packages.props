@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <!-- Windows サービスの状態確認・制御（Microsoft 公式パッケージ） -->
-    <PackageVersion Include="System.ServiceProcess.ServiceController" Version="10.0.0" />
+    <PackageVersion Include="System.ServiceProcess.ServiceController" Version="10.0.12" />
     <!-- インストーラー（installer/）のダイアログ。バージョンは global.json の WixToolset.Sdk と揃える -->
     <PackageVersion Include="WixToolset.UI.wixext" Version="6.0.2" />
   </ItemGroup>
