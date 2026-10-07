@@ -4,6 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      # WiX 7 以降は EULA の承諾と Open Source Maintenance Fee の対象。WiX 6 に留める（global.json で固定）
+      - dependency-name: "WixToolset.*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "dotnet-sdk"
     directory: "/"
     schedule:
