@@ -40,6 +40,7 @@ Right-click the tray icon to access the menu:
 - **Check current status** — Shows the app version, registry policy, and service state
 - **Stop (disable auto-update)** — Stops Windows Update via group policy
 - **Resume (normal)** — Re-enables Windows Update
+- **Settings…** — Opens the settings window to choose the display language (system default or one of 7 languages) and whether to start at login
 
 ## License
 

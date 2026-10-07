@@ -5,6 +5,8 @@ All notable changes to this project will be documented here.
 ## [Unreleased]
 
 ### Changed
+- The tray menu is shortened to: Check current status, Stop, Resume, Settings…, Exit.
+- Settings are stored as typed JSON in `%APPDATA%\WuTrayToggle\settings.json` (`language`). A `language.txt` left by an earlier version is migrated on first read and then deleted. A missing or corrupt settings file falls back to defaults instead of failing.
 - Moved from .NET 8 to .NET 10 LTS (.NET 8 reaches end of support on 2026-11-10). The SDK is pinned in `global.json`.
 - Adopted the standard C# layout from the dev-charter C# topic: `global.json`, `Directory.Build.props` (single `<Version>`, analyzers at `latest-Recommended`, warnings are errors on CI), `Directory.Packages.props` (Central Package Management), `.editorconfig`, and a `.slnx` solution.
 - The MSI is now built with WiX 6 and packages the self-contained published folder (multi-file; no longer a single-file exe). `UpgradeCode` and the main component GUID are unchanged, so existing installs upgrade in place.
@@ -12,6 +14,7 @@ All notable changes to this project will be documented here.
 - CI uses `actions/setup-dotnet@v5` with `global-json-file` and builds the MSI from the published folder.
 
 ### Added
+- A settings window (tray menu "Settings…"): the display language and "Start at login" now live in an independent window with Save/Cancel, instead of tray submenu items. Strings are provided in all 7 supported languages (the new zh/hi/es/fr/pt strings are machine-translated, like the existing ones).
 - `release.yml`: pushing a tag `vX.Y.Z` builds the MSI and attaches it to a GitHub Release.
 - Dependabot for `nuget`, `dotnet-sdk`, and `github-actions`.
 
