@@ -49,7 +49,8 @@ MSIのアンインストール時は、このスタートアップ登録も合�
 
 - 言語決定の優先順位: ユーザー設定（設定ウィンドウの「言語」で選択、`%APPDATA%\WuTrayToggle\settings.json` の `language` に永続化。旧版の `language.txt` が残っていれば、初回の読み込みでJSONへ移行して削除する）＞システムのUI言語（`GetUserDefaultUILanguage` で判定）＞英語
 - 設定ファイルへの書き込みに失敗した場合（権限不足等）は言語を切り替えず、バルーン通知でエラーを表示する（`AppSettings`/`Localization.SetOverride` が `bool` で成否を返す）
-- 文字列は `src/WuTrayToggle/Strings.cs` に集約。中国語/ヒンディー語/スペイン語/フランス語/ポルトガル語はネイティブレビュー未実施
+- 文字列は `src/WuTrayToggle/Strings.cs` に集約。中国語/ヒンディー語/スペイン語/フランス語/ポルトガル語は機械翻訳のままで、ネイティブレビュー未実施（文言の不備は Issue で報告する）
+- `.resx` には移行しない。理由: 言語を `CultureInfo` ではなく `Localization` で解決し（下記）、ユーザーの明示指定も `settings.json` で持つため、`ResourceManager` の文化フォールバックをそのまま使えない。言語ごとのサテライトアセンブリでMSIのファイルも増える。文字列が少数のため、全7言語を1ファイルで一覧できる現状の表を維持する（新しい文字列は `L(...)` に7言語を `ja, en, zh, hi, es, fr, pt` の順で渡す）
 - `<InvariantGlobalization>true</InvariantGlobalization>` のため `CultureInfo` はシステム言語を反映しない。そのため `Localization.cs` は Win32 API を直接 P/Invoke してシステムのUI言語を取得する
 
 ## Known limitations

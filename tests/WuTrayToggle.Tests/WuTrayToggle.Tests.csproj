@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>WuTrayToggle.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 本体は自己完結の WinExe で、テストの exe からは参照できない。依存を持たない AppSettings だけを取り込む -->
+    <Compile Include="..\..\src\WuTrayToggle\AppSettings.cs" Link="AppSettings.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

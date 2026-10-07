@@ -4,6 +4,8 @@ All notable changes to this project will be documented here.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-08
+
 ### Changed
 - The tray menu is shortened to: Check current status, Stop, Resume, Settings…, Exit.
 - Settings are stored as typed JSON in `%APPDATA%\WuTrayToggle\settings.json` (`language`). A `language.txt` left by an earlier version is migrated on first read and then deleted. A missing or corrupt settings file falls back to defaults instead of failing.
@@ -14,6 +16,7 @@ All notable changes to this project will be documented here.
 - CI uses `actions/setup-dotnet@v5` with `global-json-file` and builds the MSI from the published folder.
 
 ### Added
+- Automated tests (`tests/WuTrayToggle.Tests`, xUnit v3) for the settings storage and the `language.txt` migration, run in CI.
 - A settings window (tray menu "Settings…"): the display language and "Start at login" now live in an independent window with Save/Cancel, instead of tray submenu items. Strings are provided in all 7 supported languages (the new zh/hi/es/fr/pt strings are machine-translated, like the existing ones).
 - `release.yml`: pushing a tag `vX.Y.Z` builds the MSI and attaches it to a GitHub Release.
 - Dependabot for `nuget`, `dotnet-sdk`, and `github-actions`.

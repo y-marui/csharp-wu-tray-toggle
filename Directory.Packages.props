@@ -7,6 +7,8 @@
   <ItemGroup>
     <!-- Windows サービスの状態確認・制御（Microsoft 公式パッケージ） -->
     <PackageVersion Include="System.ServiceProcess.ServiceController" Version="10.0.12" />
+    <!-- テスト（tests/）。xUnit v3 は Microsoft.Testing.Platform で動く（global.json の test.runner） -->
+    <PackageVersion Include="xunit.v3" Version="4.0.1" />
     <!-- インストーラー（installer/）のダイアログ。バージョンは global.json の WixToolset.Sdk と揃える -->
     <PackageVersion Include="WixToolset.UI.wixext" Version="6.0.2" />
   </ItemGroup>

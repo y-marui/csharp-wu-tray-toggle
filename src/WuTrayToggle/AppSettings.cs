@@ -9,38 +9,49 @@ namespace WuTrayToggle;
 /// </summary>
 internal static class AppSettings
 {
-    private static readonly string SettingsDirectory = Path.Combine(
+    private static readonly string DefaultDirectory = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         "WuTrayToggle");
 
-    private static readonly string FilePath = Path.Combine(SettingsDirectory, "settings.json");
-    private static readonly string LegacyLanguageFilePath = Path.Combine(SettingsDirectory, "language.txt");
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
     public static string? GetLanguageOverride()
     {
-        return Load().Language;
+        return GetLanguageOverride(DefaultDirectory);
     }
 
     public static bool SetLanguageOverride(string? code)
     {
-        var data = Load();
-        data.Language = code;
-        return Save(data);
+        return SetLanguageOverride(code, DefaultDirectory);
     }
 
-    private static SettingsData Load()
+    // 保存先を差し替えられるようにするための内部オーバーロード（テスト用。挙動は同じ）
+    internal static string? GetLanguageOverride(string directory)
+    {
+        return Load(directory).Language;
+    }
+
+    internal static bool SetLanguageOverride(string? code, string directory)
+    {
+        var data = Load(directory);
+        data.Language = code;
+        return Save(data, directory);
+    }
+
+    private static SettingsData Load(string directory)
     {
         try
         {
-            if (File.Exists(FilePath))
+            var filePath = Path.Combine(directory, "settings.json");
+            if (File.Exists(filePath))
             {
-                return JsonSerializer.Deserialize<SettingsData>(File.ReadAllText(FilePath), JsonOptions) ?? new SettingsData();
+                return JsonSerializer.Deserialize<SettingsData>(File.ReadAllText(filePath), JsonOptions) ?? new SettingsData();
             }
 
-            if (File.Exists(LegacyLanguageFilePath))
+            var legacyPath = Path.Combine(directory, "language.txt");
+            if (File.Exists(legacyPath))
             {
-                return MigrateLegacyLanguageFile();
+                return MigrateLegacyLanguageFile(legacyPath, directory);
             }
         }
         catch (Exception ex) when (IsReadException(ex))
@@ -51,26 +62,26 @@ internal static class AppSettings
         return new SettingsData();
     }
 
-    private static SettingsData MigrateLegacyLanguageFile()
+    private static SettingsData MigrateLegacyLanguageFile(string legacyPath, string directory)
     {
-        var code = File.ReadAllText(LegacyLanguageFilePath).Trim();
+        var code = File.ReadAllText(legacyPath).Trim();
         var data = new SettingsData { Language = code.Length == 0 ? null : code };
 
         // JSON に保存できた場合だけ旧ファイルを消す（保存できなければ、次回また移行を試みる）
-        if (Save(data))
+        if (Save(data, directory))
         {
-            File.Delete(LegacyLanguageFilePath);
+            File.Delete(legacyPath);
         }
 
         return data;
     }
 
-    private static bool Save(SettingsData data)
+    private static bool Save(SettingsData data, string directory)
     {
         try
         {
-            Directory.CreateDirectory(SettingsDirectory);
-            File.WriteAllText(FilePath, JsonSerializer.Serialize(data, JsonOptions) + "\n");
+            Directory.CreateDirectory(directory);
+            File.WriteAllText(Path.Combine(directory, "settings.json"), JsonSerializer.Serialize(data, JsonOptions) + "\n");
             return true;
         }
         catch (Exception ex) when (IsFileSystemException(ex))
