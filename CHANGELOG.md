@@ -4,7 +4,7 @@ All notable changes to this project will be documented here.
 
 ## [Unreleased]
 
-## [1.1.0] - 2026-10-08
+## [1.1.0] - 2026-10-07
 
 ### Changed
 - The tray menu is shortened to: Check current status, Stop, Resume, Settings…, Exit.
