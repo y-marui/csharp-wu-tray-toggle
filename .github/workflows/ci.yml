@@ -94,6 +94,7 @@ jobs:
       - uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
+      - run: dotnet test --solution WuTrayToggle.slnx -c Release
       - run: dotnet publish src/WuTrayToggle -c Release -o publish
       - run: dotnet build installer/WuTrayToggle.Installer.wixproj -c Release -p:PublishDir=${{ github.workspace }}\publish
 

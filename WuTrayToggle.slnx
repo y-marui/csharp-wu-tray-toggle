@@ -2,4 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/WuTrayToggle/WuTrayToggle.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WuTrayToggle.Tests/WuTrayToggle.Tests.csproj" />
+  </Folder>
 </Solution>
