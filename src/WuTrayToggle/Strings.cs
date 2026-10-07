@@ -22,6 +22,35 @@ internal static class Strings
         "Démarrer avec la connexion",
         "Iniciar com o login");
 
+    public static string MenuSettings => L(
+        "設定…",
+        "Settings…",
+        "设置…",
+        "सेटिंग्स…",
+        "Configuración…",
+        "Paramètres…",
+        "Configurações…");
+
+    public static string SettingsTitle => L(
+        "設定",
+        "Settings",
+        "设置",
+        "सेटिंग्स",
+        "Configuración",
+        "Paramètres",
+        "Configurações");
+
+    public static string ButtonSave => L("保存", "Save", "保存", "सहेजें", "Guardar", "Enregistrer", "Salvar");
+
+    public static string ButtonCancel => L(
+        "キャンセル",
+        "Cancel",
+        "取消",
+        "रद्द करें",
+        "Cancelar",
+        "Annuler",
+        "Cancelar");
+
     public static string MenuLanguage => L("言語", "Language", "语言", "भाषा", "Idioma", "Langue", "Idioma");
 
     public static string MenuLanguageSystem => L(

@@ -10,6 +10,7 @@ C# (.NET 10, WinForms) 製システムトレイアプリ。`NotifyIcon` でト�
 
 - `src/WuTrayToggle/Program.cs` — エントリポイント。引数なしならトレイ常駐（`Mutex` で多重起動防止）、`--disable-startup`（MSIのアンインストール用）/`--elevated-stop`/`--elevated-start` を解釈する
 - `src/WuTrayToggle/TrayApplicationContext.cs` — トレイアイコン・コンテキストメニューの常駐処理
+- `src/WuTrayToggle/SettingsForm.cs` — 独立した設定ウィンドウ（言語・ログイン時の自動起動）。メニューの「設定…」からモーダルで開く
 
 ## Directory Structure
 
